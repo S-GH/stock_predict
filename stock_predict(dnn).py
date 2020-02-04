@@ -16,6 +16,7 @@ def split_sequence(sequence,n_steps):
     return np.array(X), np.array(y)
 
 sam = pd.read_csv('data/samsung.csv',encoding='euc-kr')
+sam = sam.sort_values(['일자'],ascending=[True])
 del sam['일자']
 sam_ndarr = sam.values
 

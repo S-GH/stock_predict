@@ -17,6 +17,8 @@ def split_sequence(sequence,n_steps):
 
 sam = pd.read_csv('data/samsung.csv',encoding='euc-kr')
 kospi = pd.read_csv('data/kospi200.csv',encoding='euc-kr')
+sam = sam.sort_values(['일자'],ascending=[True])
+kospi = kospi.sort_values(['일자'],ascending=[True])
 del sam['일자']
 del kospi['일자']
 
