@@ -34,6 +34,8 @@ print(x_data.shape,y_data.shape)
 # (425 ,1 ,5) > (425,5)
 x_data = x_data.reshape(x_data.shape[0],5)
 print(x_data.shape,y_data.shape)
+y_data = np.array([x[3] for x in y_data])
+y_data = y_data.reshape(y_data.shape[0],1)
 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 # min max 스칼라
@@ -54,23 +56,23 @@ from keras.layers import Dense, Input
 
 # input 3은 feature 3과 같은 의미, 열
 input1 = Input(shape=(5,))
-dense1 = Dense(5,activation='relu')(input1)
-dense2 = Dense(2)(dense1)
-dense3 = Dense(3)(dense2)
-output = Dense(5)(dense3)
+dense1 = Dense(50,activation='relu')(input1)
+dense2 = Dense(30)(dense1)
+dense3 = Dense(20)(dense2)
+output = Dense(1)(dense3)
 
 model = Model(inputs=input1, outputs=output)
 model.summary()
 
 #3.훈련
 model.compile(loss ='mse', optimizer ='adam', metrics=['mse'])
-model.fit(x_train, y_train, epochs =100, batch_size=1, validation_data= (x_val, y_val))
+model.fit(x_train, y_train, epochs =100, batch_size=5, validation_data= (x_val, y_val))
 
 #4. 평가
-loss, mse = model.evaluate(x_test, y_test, batch_size=1)
+loss, mse = model.evaluate(x_test, y_test, batch_size=5)
 print('mse: ', mse)
 
-y_predict = model.predict(x_test,batch_size=1)
+y_predict = model.predict(x_test,batch_size=5)
 from sklearn.metrics import mean_squared_error
 def RMSE(y_test, y_predict):
     return np.sqrt(mean_squared_error(y_test,y_predict))

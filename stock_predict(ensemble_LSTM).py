@@ -1,7 +1,5 @@
 # 삼성전자 + kospi ensemble LSTM
 # output = RMSE + 주가
-# 삼성전자 + kospi ensemble DNN
-# output = RMSE + 주가
 import pandas as pd
 import numpy as np
 
@@ -42,6 +40,9 @@ for sarr in sam_ndarr:
     slst2.append(slst1)
     
 s_x_data, y_data = split_sequence(slst2,5)
+y_data = np.array([x[3] for x in y_data])
+y_data = y_data.reshape(y_data.shape[0],1)
+
 k_x_data, _ = split_sequence(kospi_ndarr,5)
 print(s_x_data.shape,y_data.shape)
 print(k_x_data.shape)
@@ -78,15 +79,15 @@ from keras.layers import Dense, Input, LSTM
 
 # Model 1
 input1 = Input(shape=(5,5))
-LSTM11 = LSTM(5,activation='relu')(input1)
-dense12 = Dense(2)(LSTM11)
+LSTM11 = LSTM(10,activation='relu')(input1)
+dense12 = Dense(5)(LSTM11)
 dense13 = Dense(3)(dense12)
 output1 = Dense(1)(dense13)
 
 # Model 2
 input2 = Input(shape=(5,5))
-LSTM21 = LSTM(5,activation='relu')(input2)
-dense22 = Dense(2)(LSTM21)
+LSTM21 = LSTM(10,activation='relu')(input2)
+dense22 = Dense(5)(LSTM21)
 dense23 = Dense(3)(dense22)
 output2 = Dense(1)(dense23)
 
@@ -95,22 +96,22 @@ from keras.layers.merge import concatenate
 merge1 = concatenate([output1,output2])
 
 # Model 3
-middle1 = Dense(4)(merge1)
-middle2 = Dense(7)(middle1)
-output = Dense(5)(middle2)
+middle1 = Dense(10)(merge1)
+middle2 = Dense(5)(middle1)
+output = Dense(1)(middle2)
 
 model = Model(inputs=[input1,input2], outputs=output)
 model.summary()
 
 #3.훈련
 model.compile(loss ='mse', optimizer ='adam', metrics=['mse'])
-model.fit([s_x_train,k_x_train], y_train, epochs =2, batch_size=1, validation_data= ([s_x_val,k_x_val], y_val))
+model.fit([s_x_train,k_x_train], y_train, epochs =100, batch_size=5, validation_data= ([s_x_val,k_x_val], y_val))
 
 #4. 평가
-loss, mse = model.evaluate([s_x_test,k_x_test], y_test, batch_size=1)
+loss, mse = model.evaluate([s_x_test,k_x_test], y_test, batch_size=5)
 print('mse: ', mse)
 
-y_predict = model.predict([s_x_test,k_x_test],batch_size=1)
+y_predict = model.predict([s_x_test,k_x_test],batch_size=5)
 from sklearn.metrics import mean_squared_error
 def RMSE(y_test, y_predict):
     return np.sqrt(mean_squared_error(y_test,y_predict))
