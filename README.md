@@ -1,5 +1,5 @@
 # stock predict
-
+test0207 결과 : 
 ![predict](./img/predict.png)
 
 | Num | RMSE | predict |
