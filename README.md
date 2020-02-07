@@ -1,8 +1,6 @@
 # stock predict
 
-
-![predict][predict.png]
-
+![predict](./img/predict.png)
 
 | Num | RMSE | predict |
 | ------------------- | ------------- | ---------- |
