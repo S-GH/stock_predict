@@ -1,7 +1,7 @@
 # stock predict
 
-test0207 result
-![predict][./predict.png]
+
+![predict][predict.png]
 
 
 | Num | RMSE | predict |
