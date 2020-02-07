@@ -1,4 +1,9 @@
 # stock predict
+
+test0207 result
+![predict][./predict.png]
+
+
 | Num | RMSE | predict |
 | ------------------- | ------------- | ---------- |
 | 1. dnn            | 597.213   | 1.06254025e+11    |
